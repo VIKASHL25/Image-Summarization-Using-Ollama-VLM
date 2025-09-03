@@ -4,9 +4,9 @@ import base64
 import json
 
 st.set_page_config(page_title="Image Summarization")
-st.title("Welcome to Image Summarization")
+st.title("Welcome to Vision to Insights")
 st.write("Upload an image and get a short AI-generated description using Ollama Vision-Language Model (VLM).")
-upfile=st.file_uploader(" Upload an image",type=["jpg","jpeg","png"])
+upfile=st.file_uploader("Upload an image",type=["jpg","jpeg","png"])
 
 if upfile is not None:
     st.image(upfile, caption="Uploaded Image",  width=500)
@@ -16,15 +16,14 @@ if upfile is not None:
 
     if st.button("Generate Summary"):
         with st.spinner("Analyzing image, please wait..."):
+            url = "http://localhost:11500/api/generate"
+            body={
+                "model":"llava", 
+                "prompt":"Provide a detailed summary of this image.",
+                "images":[ibase]
+                }            
             response=requests.post(
-                "http://localhost:11434/api/generate",
-                json={
-                    "model":"llava", 
-                    "prompt":"Provide a detailed summary of this image.",
-                    "images":[ibase]
-                },
-                stream=True, 
-                timeout=120
+                url,json=body,stream=True
             )
 
             if response.status_code==200:
@@ -43,12 +42,10 @@ if upfile is not None:
                     st.download_button(
                         label="Download Summary",
                         data=result.strip(),
-                        file_name="image_summary.txt",
+                        file_name="ImageSummary.txt",
                         mime="text/plain"
                     )
                 else:
                     st.warning(" Summary cant be generated, Try another image...")
             else:
                 st.error(f" Error {response.status_code}: {response.text}")
-
-           
