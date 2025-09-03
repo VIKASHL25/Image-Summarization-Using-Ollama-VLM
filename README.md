@@ -37,9 +37,12 @@ Users can upload an image, and the AI will analyze it and provide a detailed tex
    ```bash
    git clone https://github.com/your-username/image-summarization-ai.git
    cd image-summarization-ai
-2. Install dependencies:
-   pip install streamlit request 
-3. Make sure you have Ollama installed and running:
-    ollama serve
-4.Run the Streamlit app:
-   streamlit run app.py
+# Install dependencies
+pip install streamlit requests
+
+# Make sure you have Ollama installed and running
+ollama serve
+
+# Run the Streamlit app
+streamlit run app.py
+
